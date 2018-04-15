@@ -54,7 +54,8 @@ client.on("message", message => {
         "!op <summoner> - na.op.gg profile for <summoner>\n" +
         "!champion <champion> - champion.gg stats for <champion>\n" +
         "!sanchez - ???\n" +
-        "!jebaited - ???");
+        "!jebaited - ???\n" +
+		"!wow - ???");
       break;
 
     case "ping":
@@ -75,7 +76,7 @@ client.on("message", message => {
         }
       }
       break;
-      
+
     case "flip":
       let flipResult = Util.flip();
       if (sender === null) {
@@ -85,7 +86,7 @@ client.on("message", message => {
         message.channel.send(sender + " " + flipResult);
       }
       break;
-      
+
     case "roll":
       try {
         let rollResult = Dice.rollDice(args.join(" "));
@@ -110,18 +111,25 @@ client.on("message", message => {
       let championName = args.join("").toLowerCase().replace(/[^a-z]/g, '');
       message.channel.send("http://na.op.gg/champion/" + championName + "/statistics");
       break;
-    
+
     case "sanchez":
       let sanchezImage = Util.sanchez();
       message.channel.send("", {
         "files": [sanchezImage]
       });
       break;
-      
+
     case "jebaited":
       let jebaitedImage = Util.jebaited();
       message.channel.send("", {
         "files": [jebaitedImage]
+      });
+      break;
+
+	case "wow":
+	  let wowImage = Util.wow();
+      message.channel.send("", {
+        "files": [wowImage]
       });
       break;
 

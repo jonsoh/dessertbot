@@ -23,10 +23,15 @@ function jebaited() {
   return "./assets/jebaited.png";
 }
 
+function wow() {
+  return "./assets/wow.gif";
+}
+
 module.exports = 
 {
   flip: flip,
   rollDie: rollDie,
   sanchez: sanchez,
-  jebaited: jebaited
+  jebaited: jebaited,
+  wow: wow
 };

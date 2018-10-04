@@ -53,9 +53,8 @@ client.on("message", message => {
         "!roll <dice expression> - roll some dice\n" +
         "!op <summoner> - na.op.gg profile for <summoner>\n" +
         "!champion <champion> - champion.gg stats for <champion>\n" +
-        "!sanchez - ???\n" +
-        "!jebaited - ???\n" +
-		"!wow - ???");
+	"!sanchez, !jebaited - image commands\n" +
+        "!wow, !wtf - gif commands");
       break;
 
     case "ping":
@@ -126,10 +125,17 @@ client.on("message", message => {
       });
       break;
 
-	case "wow":
-	  let wowImage = Util.wow();
+    case "wow":
+      let wowImage = Util.wow();
       message.channel.send("", {
         "files": [wowImage]
+      });
+      break;
+
+    case "wtf":
+      let wtfImage = Util.wtf();
+      message.channel.send("", {
+        "files": [wtfImage]
       });
       break;
 

@@ -27,11 +27,16 @@ function wow() {
   return "./assets/wow.gif";
 }
 
+function wtf() {
+  return "./assets/wtf.gif";
+}
+
 module.exports = 
 {
   flip: flip,
   rollDie: rollDie,
   sanchez: sanchez,
   jebaited: jebaited,
-  wow: wow
+  wow: wow,
+  wtf: wtf
 };

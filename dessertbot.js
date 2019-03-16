@@ -1,10 +1,52 @@
 const Util = require("./util.js");
 const Dice = require("./dice.js");
+const MTG = require("./mtg.js");
 
 const Discord = require("discord.js");
 
 const client = new Discord.Client();
 const config = require("./config.json");
+
+function cardDescriptionForEmbed(card) {
+  var description = "";
+  if(card.cost != "") {
+    description += "\n" + card.cost;
+  }
+  if(card.type != "") {
+    description += "\n" + card.type;
+  }
+  if(card.powerToughnessLoyalty != "") {
+    description += ", " + card.powerToughnessLoyalty;
+  }
+  if(card.description != "") {
+    description += "\n" + card.text;
+  }
+  if(card.flavour != "") {
+    description += "\n*" + card.flavour + "*";
+  }
+  return description.trim();
+}
+
+function sendCardEmbed(card, channel) {
+  const embed = new Discord.RichEmbed();
+  embed.setColor(0x9B59B6)
+  embed.setTimestamp()
+
+  embed.setTitle(card.name);
+  if(card.link != "") {
+    embed.setURL(card.link);
+  }
+  if(card.thumbnail != "") {
+    embed.setThumbnail(card.thumbnail);
+  }
+
+  embed.setDescription(cardDescriptionForEmbed(card));
+  card.faces.forEach( face => {
+    embed.addField(face.name, cardDescriptionForEmbed(face));
+  });
+
+  channel.send(embed);
+}
 
 client.on("ready", () => {
   console.log("DessertBot Ready!");
@@ -15,7 +57,7 @@ client.on("disconnect", event => {
   console.log("Reason: " + event.reason);
 });
 
-client.on('guildMemberAdd', member => {
+client.on("guildMemberAdd", member => {
   const embed = new Discord.RichEmbed()
     .setColor(0x9B59B6)
     .setTimestamp()
@@ -23,7 +65,7 @@ client.on('guildMemberAdd', member => {
   member.guild.defaultChannel.sendEmbed(embed);
 });
 
-client.on('guildMemberRemove', member => {
+client.on("guildMemberRemove", member => {
   const embed = new Discord.RichEmbed()
     .setColor(0x9B59B6)
     .setTimestamp()
@@ -52,7 +94,8 @@ client.on("message", message => {
         "!flip - flip a coin\n" +
         "!roll <dice expression> - roll some dice\n" +
         "!op <summoner> - na.op.gg profile for <summoner>\n" +
-        "!champion <champion> - champion.gg stats for <champion>\n" +
+        "!champion <champion> - na.op.gg stats for <champion>\n" +
+        "!mtg <card name> - search for a Magic: The Gathering card\n" +
 	"!sanchez, !jebaited - image commands\n" +
         "!wow, !wtf - gif commands");
       break;
@@ -109,6 +152,18 @@ client.on("message", message => {
     case "champion":
       let championName = args.join("").toLowerCase().replace(/[^a-z]/g, '');
       message.channel.send("http://na.op.gg/champion/" + championName + "/statistics");
+      break;
+
+    case "mtg":
+      let mtgQuery = args.join("+");
+      MTG.mtgSearch(mtgQuery, result => {
+        if(result instanceof MTG.MTGError) {
+          message.channel.send(result.details);
+        }
+        else if(result instanceof MTG.MTGCard) {
+          sendCardEmbed(result, message.channel);
+        }
+      });
       break;
 
     case "sanchez":

@@ -46,7 +46,7 @@ function makeCard(json) {
 }
 
 function mtgSearch(query, callback) {
-  let queryURL = "https://api.scryfall.com/cards/named?fuzzy=" + query;
+  let queryURL = "https://api.scryfall.com/cards/named?fuzzy=" + encodeURIComponent(query);
   HTTPS.get(queryURL, response => {
     let data = "";
 

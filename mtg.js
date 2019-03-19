@@ -37,7 +37,7 @@ function makeCard(json) {
 
   var faces = [];
   if(json.hasOwnProperty("card_faces")) {
-    json.card_faces.forEach( face => {
+    json.card_faces.forEach(face => {
       faces.push(makeCard(face));
     });
   }
@@ -46,7 +46,12 @@ function makeCard(json) {
 }
 
 function mtgSearch(query, callback) {
-  let queryURL = "https://api.scryfall.com/cards/named?fuzzy=" + encodeURIComponent(query);
+  var escapedQuery = [];
+  query.forEach(term => {
+    escapedQuery.push(encodeURIComponent(term));
+  });
+
+  let queryURL = "https://api.scryfall.com/cards/named?fuzzy=" + escapedQuery.join("+");
   HTTPS.get(queryURL, response => {
     let data = "";
 

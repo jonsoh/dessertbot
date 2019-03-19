@@ -41,7 +41,7 @@ function sendCardEmbed(card, channel) {
   }
 
   embed.setDescription(cardDescriptionForEmbed(card));
-  card.faces.forEach( face => {
+  card.faces.forEach(face => {
     embed.addField(face.name, cardDescriptionForEmbed(face));
   });
 
@@ -155,8 +155,7 @@ client.on("message", message => {
       break;
 
     case "mtg":
-      let mtgQuery = args.join("+");
-      MTG.mtgSearch(mtgQuery, result => {
+      MTG.mtgSearch(args, result => {
         if(result instanceof MTG.MTGError) {
           message.channel.send(result.details);
         }

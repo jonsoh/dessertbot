@@ -23,6 +23,10 @@ function jebaited() {
   return "./assets/jebaited.png";
 }
 
+function weddingjason() {
+  return "./assets/weddingjason.jpg";
+}
+
 function wow() {
   return "./assets/wow.gif";
 }
@@ -37,6 +41,7 @@ module.exports =
   rollDie: rollDie,
   sanchez: sanchez,
   jebaited: jebaited,
+  weddingjason: weddingjason,
   wow: wow,
   wtf: wtf
 };

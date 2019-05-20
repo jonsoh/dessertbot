@@ -96,7 +96,7 @@ client.on("message", message => {
         "!op <summoner> - na.op.gg profile for <summoner>\n" +
         "!champion <champion> - na.op.gg stats for <champion>\n" +
         "!mtg <card name> - search for a Magic: The Gathering card\n" +
-	"!sanchez, !jebaited - image commands\n" +
+	"!sanchez, !jebaited, !weddingjason - image commands\n" +
         "!wow, !wtf - gif commands");
       break;
 
@@ -176,6 +176,13 @@ client.on("message", message => {
       let jebaitedImage = Util.jebaited();
       message.channel.send("", {
         "files": [jebaitedImage]
+      });
+      break;
+
+    case "weddingjason":
+      let weddingJasonImage = Util.weddingjason();
+      message.channel.send("", {
+        "files": [weddingJasonImage]
       });
       break;
 

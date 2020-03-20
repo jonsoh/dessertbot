@@ -12,9 +12,16 @@ function rollDie(sides) {
   return random(sides);
 }
 
+function ronnie() {
+  const ronniePattern = "./assets/ronnie/ronnie%d.jpg";
+  const maxRonnie = 3;
+  let ronnieIndex = random(maxRonnie);
+  return ronniePattern.replace("%d", ronnieIndex);
+}
+
 function sanchez() {
-  const sanchezPattern = "./assets/sanchez%d.jpg";
-  const maxSanchez = 19;
+  const sanchezPattern = "./assets/sanchez/sanchez%d.jpg";
+  const maxSanchez = 26;
   let sanchezIndex = random(maxSanchez);
   return sanchezPattern.replace("%d", sanchezIndex);
 }
@@ -39,6 +46,7 @@ module.exports =
 {
   flip: flip,
   rollDie: rollDie,
+  ronnie: ronnie,
   sanchez: sanchez,
   jebaited: jebaited,
   weddingjason: weddingjason,

@@ -165,6 +165,13 @@ client.on("message", message => {
       });
       break;
 
+    case "ronnie":
+      let ronnieImage = Util.ronnie();
+      message.channel.send("", {
+        "files": [ronnieImage]
+      });
+      break;
+
     case "sanchez":
       let sanchezImage = Util.sanchez();
       message.channel.send("", {

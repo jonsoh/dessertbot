@@ -4,7 +4,9 @@
   "description": "",
   "main": "dessertbot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "pm2 start dessertbot.js --name DessertBot",
+    "stop": "pm2 stop DessertBot",
+    "restart": "pm2 restart DessertBot"
   },
   "repository": {
     "type": "git",
@@ -18,6 +20,7 @@
   },
   "homepage": "https://github.com/jonsoh/dessertbot#readme",
   "dependencies": {
-    "discord.js": "^11.3.0"
+    "discord.js": "^11.3.0",
+    "pm2": "^4.4.0"
   }
 }

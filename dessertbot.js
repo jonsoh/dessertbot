@@ -28,7 +28,7 @@ function cardDescriptionForEmbed(card) {
 }
 
 function sendCardEmbed(card, channel) {
-  const embed = new Discord.RichEmbed();
+  const embed = new Discord.MessageEmbed();
   embed.setColor(0x9B59B6)
   embed.setTimestamp()
 
@@ -58,10 +58,10 @@ client.on("disconnect", event => {
 });
 
 client.on("guildMemberAdd", member => {
-  const embed = new Discord.RichEmbed()
+  const embed = new Discord.MessageEmbed()
     .setColor(0x9B59B6)
     .setTimestamp()
-    .addField("Welcome!", `${member.user}, welcome to ${member.guild} :smile:`);
+    .setDescription("Welcome!", `${member.displayName}, welcome to ${member.guild} :smile:`);
   member.guild.defaultChannel.sendEmbed(embed);
 });
 
@@ -69,7 +69,7 @@ client.on("guildMemberRemove", member => {
   const embed = new Discord.RichEmbed()
     .setColor(0x9B59B6)
     .setTimestamp()
-    .addField("Hope you've enjoyed your stay!", `${member.user} has left ${member.guild} :frowning:`);
+    .setDescription("Hope you've enjoyed your stay!", `${member.displayName} has left ${member.guild} :frowning:`);
   member.guild.defaultChannel.sendEmbed(embed);
 });
 
@@ -83,8 +83,6 @@ client.on("message", message => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   
-  const sender = message.member;
-
   // Perform command
   switch(command) {
     case "help":
@@ -93,65 +91,38 @@ client.on("message", message => {
         "!whois @<member> - user information for <member>\n" +
         "!flip - flip a coin\n" +
         "!roll <dice expression> - roll some dice\n" +
-        "!op <summoner> - na.op.gg profile for <summoner>\n" +
-        "!champion <champion> - na.op.gg stats for <champion>\n" +
         "!mtg <card name> - search for a Magic: The Gathering card\n" +
 	"!sanchez, !jebaited, !weddingjason - image commands\n" +
         "!wow, !wtf - gif commands");
       break;
 
     case "ping":
-      message.channel.send("!pong");
+      message.reply("!pong");
       break;
 
     case "whois":
-      if(message.mentions.users.size > 0) {
-        let snowflake = message.mentions.users.firstKey();
-        if(message.guild.members.has(snowflake)) {
-          let member = message.guild.members.get(snowflake);
-          let name = (member.nickname != null) ?
-            member.nickname + " (" + member.user.username + "#" + member.user.discriminator + ")" :
-            member.user.username + "#" + member.user.discriminator;
-          message.channel.send(member + " is " + name +
-            ", member of " + message.guild.name +
-            " since " + member.joinedAt.toDateString() );
-        }
-      }
+      let member = message.mentions.members.first() || message.member;
+      let name = (member.nickname != null) ?
+        member.nickname + " (" + member.user.username + "#" + member.user.discriminator + ")" :
+        member.user.username + "#" + member.user.discriminator;
+      message.channel.send("<@" + member + ">" + " is " + name +
+        ", member of " + message.guild.name +
+        " since " + member.joinedAt.toDateString() );
       break;
 
     case "flip":
       let flipResult = Util.flip();
-      if (sender === null) {
-        message.channel.send(flipResult);
-      }
-      else {
-        message.channel.send(sender + " " + flipResult);
-      }
+      message.reply(flipResult);
       break;
 
     case "roll":
       try {
         let rollResult = Dice.rollDice(args.join(" "));
-        if (sender === null) {
-          message.channel.send(rollResult);
-        }
-        else {
-          message.channel.send(sender + " rolled " + rollResult);
-        }
+        message.reply(rollResult);
       }
       catch(error) {
-        message.channel.send(sender + " " + error.message);
+        message.reply(error.message);
       }
-      break;
-
-    case "op":
-      let summonerName = args.join("+");
-      message.channel.send("http://na.op.gg/summoner/userName=" + summonerName);
-      break;
-
-    case "champion":
-      let championName = args.join("").toLowerCase().replace(/[^a-z]/g, '');
-      message.channel.send("http://na.op.gg/champion/" + championName + "/statistics");
       break;
 
     case "mtg":

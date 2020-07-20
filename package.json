@@ -21,7 +21,6 @@
   "homepage": "https://github.com/jonsoh/dessertbot#readme",
   "dependencies": {
     "discord.js": "^12.2.0",
-    "lodash": "^4.17.19",
     "pm2": "^4.4.0"
   }
 }

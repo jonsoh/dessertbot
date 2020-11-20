@@ -74,6 +74,17 @@ client.on("guildMemberRemove", member => {
   member.guild.defaultChannel.sendEmbed(embed);
 });
 
+client.on("voiceStateUpdate", (oldMember, newMember) => {
+  const botVoiceChannel = oldMember.guild.member(client.user).voice.channel;
+  if(!botVoiceChannel) {
+    return;
+  }
+
+  if(botVoiceChannel.members.size === 1) {
+    Music.forceStop();
+  }
+});
+
 client.on("message", message => {
   // Ignore bot messages and non-command messages
   if(message.author.bot || !message.content.startsWith(config.prefix)) {

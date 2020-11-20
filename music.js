@@ -39,9 +39,9 @@ function play(botUser, textChannel, voiceChannel, videoUrl) {
   }
 
   ytdl.getInfo(videoUrl).then(info => {
-    if(playlist.textChannel === undefined && playlist.voiceChannel === undefined) {
+    if(!playlist.connection) {
       voiceChannel.join().then(connection => {
-        playlist.queue(new Song(info.videoDetails.title, info.videoDetails.video_url, info.videoDetails.thumbnail_url));
+        playlist.queue(new Song(info.videoDetails.title, info.videoDetails.video_url, info.videoDetails.thumbnail.thumbnails[0].url));
         playlist.textChannel = textChannel;
         playlist.voiceChannel = voiceChannel;
         playlist.connection = connection;
@@ -51,7 +51,7 @@ function play(botUser, textChannel, voiceChannel, videoUrl) {
         console.log("Error joining voice channel: " + error.message);
       });
     } else {
-      playlist.queue(new Song(info.videoDetails.title, info.videoDetails.video_url, info.videoDetails.thumbnail_url))
+      playlist.queue(new Song(info.videoDetails.title, info.videoDetails.video_url, info.videoDetails.thumbnail.thumbnails[0].url));
       textChannel.send(`${info.videoDetails.title} added to playlist`)
     }
   }).catch(error => {
@@ -72,8 +72,14 @@ function stop(botUser, textChannel, voiceChannel) {
     return;
   }
 
+  forceStop();
+}
+
+function forceStop() {
   playlist.clear();
-  playlist.connection.dispatcher.end();
+  if(playlist.connection) {
+    playlist.connection.dispatcher.end();
+  }
 }
 
 function checkPermissions(botUser, textChannel, voiceChannel) {
@@ -138,4 +144,5 @@ module.exports =
   play: play,
   skip: skip,
   stop: stop,
+  forceStop: forceStop
 };

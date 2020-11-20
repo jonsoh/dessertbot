@@ -88,7 +88,12 @@ function checkPermissions(botUser, textChannel, voiceChannel) {
     return false;
   }
 
-  if(!voiceChannel || voiceChannel !== playlist.voiceChannel && playlist.voiceChannel !== undefined) {
+  if(!voiceChannel) {
+    textChannel.send("Sorry, you can't modify the playlist if you're not in a voice channel");
+    return false;
+  }
+
+  if(voiceChannel !== playlist.voiceChannel && playlist.voiceChannel !== undefined) {
     textChannel.send("Sorry, you can't modify the playlist if you're not in the same voice channel as me");
     return false;
   }

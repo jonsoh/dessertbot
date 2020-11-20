@@ -46,6 +46,7 @@ function play(botUser, textChannel, voiceChannel, videoUrl) {
         playlist.voiceChannel = voiceChannel;
         playlist.connection = connection;
 
+        connection.setVolumeLogarithmic(0.5);
         playNextSong();
       }).catch(error => {
         console.log("Error joining voice channel: " + error.message);

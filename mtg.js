@@ -25,8 +25,7 @@ function makeCard(json) {
   var powerToughnessLoyalty = "";
   if(json.hasOwnProperty("power") && json.hasOwnProperty("toughness")) {
     powerToughnessLoyalty = json.power + "/" + json.toughness;
-  }
-  else if(json.hasOwnProperty("loyalty")) {
+  } else if(json.hasOwnProperty("loyalty")) {
     powerToughnessLoyalty = json.loyalty;
   }
   
@@ -64,8 +63,7 @@ function mtgSearch(query, callback) {
       if(json.object == "error") {
         let error = new MTGError(json.details);
         callback(error);
-      }
-      else {
+      } else {
         let card = makeCard(json);
         callback(card);
       }

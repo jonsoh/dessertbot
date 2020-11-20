@@ -145,7 +145,7 @@ function tokenize(str) {
 function rollDice(str) {
   var tokens = tokenize(str);
   
-  if (tokens.length > 20) {
+  if(tokens.length > 20) {
     throw new Error("That's a bit complicated, do you mind splitting up those rolls?");
   }
   
@@ -157,7 +157,7 @@ function rollDice(str) {
     sum += roll.sum;
     
     if(token instanceof Dice) {
-      var description = token.count + "d" + token.sides + ": " + Math.abs(roll.sum);
+      var description = `${token.count}d${token.sides}: ${Math.abs(roll.sum)}`;
       var rolls = roll.rolls;
       if(rolls.length > 1) {
         var positiveRolls = rolls.map(Math.abs);
@@ -176,7 +176,7 @@ function rollDice(str) {
     return sum;
   }
   
-  return sum + " (" + descriptionStr + ")";
+  return `${sum} (${descriptionStr})`;
 }
 
 module.exports = {

@@ -1,6 +1,7 @@
 const Util = require("./util.js");
 const Dice = require("./dice.js");
 const MTG = require("./mtg.js");
+const Music = require("./music.js")
 
 const Discord = require("discord.js");
 
@@ -8,21 +9,21 @@ const client = new Discord.Client();
 const config = require("./config.json");
 
 function cardDescriptionForEmbed(card) {
-  var description = "";
+  let description = "";
   if(card.cost != "") {
-    description += "\n" + card.cost;
+    description += `\n${card.cost}`;
   }
   if(card.type != "") {
-    description += "\n" + card.type;
+    description += `\n${card.type}`;
   }
   if(card.powerToughnessLoyalty != "") {
-    description += ", " + card.powerToughnessLoyalty;
+    description +=`\n${card.powerToughnessLoyalty}`;
   }
   if(card.description != "") {
-    description += "\n" + card.text;
+    description += `\n${card.text}`;
   }
   if(card.flavour != "") {
-    description += "\n*" + card.flavour + "*";
+    description += `\n*${card.flavour}*`;
   }
   return description.trim();
 }
@@ -53,8 +54,8 @@ client.on("ready", () => {
 });
 
 client.on("disconnect", event => {
-  console.log("DessertBot disconnected with code: " + event.code + ", cleanly: " + event.wasClean);
-  console.log("Reason: " + event.reason);
+  console.log(`DessertBot disconnected with code: ${event.code}, cleanly: + ${event.wasClean}`);
+  console.log(`Reason: ${event.reason}`);
 });
 
 client.on("guildMemberAdd", member => {
@@ -92,8 +93,9 @@ client.on("message", message => {
         "!flip - flip a coin\n" +
         "!roll <dice expression> - roll some dice\n" +
         "!mtg <card name> - search for a Magic: The Gathering card\n" +
-	"!sanchez, !jebaited, !weddingjason - image commands\n" +
-        "!wow, !wtf - gif commands");
+	      "!sanchez, !jebaited, !weddingjason - image commands\n" +
+        "!wow, !wtf - gif commands\n" +
+        "!play, !skip, !stop - music commands");
       break;
 
     case "ping":
@@ -103,11 +105,9 @@ client.on("message", message => {
     case "whois":
       let member = message.mentions.members.first() || message.member;
       let name = (member.nickname != null) ?
-        member.nickname + " (" + member.user.username + "#" + member.user.discriminator + ")" :
-        member.user.username + "#" + member.user.discriminator;
-      message.channel.send("<@" + member + ">" + " is " + name +
-        ", member of " + message.guild.name +
-        " since " + member.joinedAt.toDateString() );
+        `${member.nickname} (${member.user.username}#${member.user.discriminator})` :
+        `${member.user.username}#${member.user.discriminator}`;
+      message.channel.send(`<@${member}> is ${name}, member of ${message.guild.name} since ${member.joinedAt.toDateString()}` );
       break;
 
     case "flip":
@@ -129,8 +129,7 @@ client.on("message", message => {
       MTG.mtgSearch(args, result => {
         if(result instanceof MTG.MTGError) {
           message.channel.send(result.details);
-        }
-        else if(result instanceof MTG.MTGCard) {
+        } else if(result instanceof MTG.MTGCard) {
           sendCardEmbed(result, message.channel);
         }
       });
@@ -176,6 +175,18 @@ client.on("message", message => {
       message.channel.send("", {
         "files": [wtfImage]
       });
+      break;
+
+    case "play":
+      Music.play(message.client.user, message.channel, message.member.voice.channel, args.shift());
+      break;
+
+    case "skip":
+      Music.skip(message.client.user, message.channel, message.member.voice.channel);
+      break;
+
+    case "stop":
+      Music.stop(message.client.user, message.channel, message.member.voice.channel);
       break;
 
     default:

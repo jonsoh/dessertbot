@@ -14,7 +14,7 @@ function rollDie(sides) {
 
 function ronnie() {
   const ronniePattern = "./assets/ronnie/ronnie%d.jpg";
-  const maxRonnie = 3;
+  const maxRonnie = 5;
   let ronnieIndex = random(maxRonnie);
   return ronniePattern.replace("%d", ronnieIndex);
 }

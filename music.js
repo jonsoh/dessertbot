@@ -120,7 +120,16 @@ function playNextSong() {
 
   const song = playlist.dequeue();
 
-  playlist.connection.play(ytdl(song.url))
+  const ytdlParams = {};
+  const startTime = getSongTimestamp(song.url);
+  if (startTime) {
+    ytdlParams.start = startTime;
+  }
+
+  playlist.connection.play(
+    ytdl(song.url, ytdlParams),
+    { volume: 0.75 }
+  )
     .on("finish", () => {
       playNextSong();
     })
@@ -142,6 +151,15 @@ function sendSongEmbed(song, channel) {
 
   channel.send("Now playing:")
   channel.send(embed);
+}
+
+function getSongTimestamp(songUrl) {
+  const urlObject = new URL(songUrl);
+  let timestamp = urlObject.searchParams.get('t');
+  if (timestamp && !timestamp.includes('s')) {
+    timestamp = `${timestamp}s`;
+  }
+  return timestamp;
 }
 
 module.exports = 

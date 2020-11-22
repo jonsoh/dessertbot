@@ -139,6 +139,7 @@ function playNextSong() {
     })
     .on("error", error => {
       console.log("Error playing song: " + error.message);
+      playNextSong();
     });
   
   sendSongEmbed(song, playlist.textChannel);

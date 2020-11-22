@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
 const ytdl = require('ytdl-core');
 
-function Song(title, url, thumbnail) {
+function Song(title, url, timestamp, thumbnail) {
   this.title = title;
   this.url = url;
+  this.timestamp = timestamp;
   this.thumbnail = thumbnail;
 }
 
@@ -39,9 +40,13 @@ function play(botUser, textChannel, voiceChannel, videoUrl) {
   }
 
   ytdl.getInfo(videoUrl).then(info => {
+    const song = new Song(info.videoDetails.title,
+      info.videoDetails.video_url,
+      getSongTimestamp(videoUrl),
+      info.videoDetails.thumbnail.thumbnails[0].url);
     if(!playlist.connection) {
       voiceChannel.join().then(connection => {
-        playlist.queue(new Song(info.videoDetails.title, info.videoDetails.video_url, info.videoDetails.thumbnail.thumbnails[0].url));
+        playlist.queue(song);
         playlist.textChannel = textChannel;
         playlist.voiceChannel = voiceChannel;
         playlist.connection = connection;
@@ -51,8 +56,8 @@ function play(botUser, textChannel, voiceChannel, videoUrl) {
         console.log("Error joining voice channel: " + error.message);
       });
     } else {
-      playlist.queue(new Song(info.videoDetails.title, info.videoDetails.video_url, info.videoDetails.thumbnail.thumbnails[0].url));
-      textChannel.send(`${info.videoDetails.title} added to playlist`)
+      playlist.queue(song);
+      textChannel.send(`${info.videoDetails.title} added to playlist`);
     }
   }).catch(error => {
     console.log("Error retrieving video: " + error.message);
@@ -121,9 +126,8 @@ function playNextSong() {
   const song = playlist.dequeue();
 
   const ytdlParams = {};
-  const startTime = getSongTimestamp(song.url);
-  if (startTime) {
-    ytdlParams.start = startTime;
+  if (song.timestamp) {
+    ytdlParams.begin = song.timestamp;
   }
 
   playlist.connection.play(

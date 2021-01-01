@@ -58,22 +58,6 @@ client.on("disconnect", event => {
   console.log(`Reason: ${event.reason}`);
 });
 
-client.on("guildMemberAdd", member => {
-  const embed = new Discord.MessageEmbed()
-    .setColor(0x9B59B6)
-    .setTimestamp()
-    .setDescription("Welcome!", `${member.displayName}, welcome to ${member.guild} :smile:`);
-  member.guild.defaultChannel.sendEmbed(embed);
-});
-
-client.on("guildMemberRemove", member => {
-  const embed = new Discord.RichEmbed()
-    .setColor(0x9B59B6)
-    .setTimestamp()
-    .setDescription("Hope you've enjoyed your stay!", `${member.displayName} has left ${member.guild} :frowning:`);
-  member.guild.defaultChannel.sendEmbed(embed);
-});
-
 client.on("voiceStateUpdate", (oldMember, newMember) => {
   const botVoiceChannel = oldMember.guild.member(client.user).voice.channel;
   if(!botVoiceChannel) {

@@ -102,7 +102,7 @@ client.on("message", message => {
       let name = (member.nickname != null) ?
         `${member.nickname} (${member.user.username}#${member.user.discriminator})` :
         `${member.user.username}#${member.user.discriminator}`;
-      message.channel.send(`<@${member}> is ${name}, member of ${message.guild.name} since ${member.joinedAt.toDateString()}` );
+      message.channel.send(`${member} is ${name}, member of ${message.guild.name} since ${member.joinedAt.toDateString()}` );
       break;
 
     case "flip":

@@ -125,7 +125,7 @@ function playNextSong() {
 
   const song = playlist.dequeue();
 
-  const ytdlParams = {};
+  const ytdlParams = { highWaterMark: 1 < 24 };
   if (song.timestamp) {
     ytdlParams.begin = song.timestamp;
   }

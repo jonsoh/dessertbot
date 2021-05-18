@@ -26,6 +26,12 @@ function sanchez() {
   return sanchezPattern.replace("%d", sanchezIndex);
 }
 
+function elise() {
+  const maxElise = 3;
+  const eliseIndex = random(maxElise);
+  return `./assets/elise/elise${eliseIndex}.jpg`;
+}
+
 function jebaited() {
   return "./assets/jebaited.png";
 }
@@ -46,6 +52,7 @@ module.exports =
 {
   flip: flip,
   rollDie: rollDie,
+  elise: elise,
   ronnie: ronnie,
   sanchez: sanchez,
   jebaited: jebaited,

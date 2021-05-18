@@ -88,7 +88,7 @@ client.on("message", message => {
         "!flip - flip a coin\n" +
         "!roll <dice expression> - roll some dice\n" +
         "!mtg <card name> - search for a Magic: The Gathering card\n" +
-	      "!sanchez, !jebaited, !weddingjason - image commands\n" +
+	      "!sanchez, !ronnie, !elise, !jebaited, !weddingjason - image commands\n" +
         "!wow, !wtf - gif commands\n" +
         "!play, !skip, !stop - music commands");
       break;
@@ -127,6 +127,13 @@ client.on("message", message => {
         } else if(result instanceof MTG.MTGCard) {
           sendCardEmbed(result, message.channel);
         }
+      });
+      break;
+
+    case "elise":
+      let eliseImage = Util.elise();
+      message.channel.send("", {
+        "files": [eliseImage]
       });
       break;
 

@@ -27,7 +27,7 @@ function sanchez() {
 }
 
 function elise() {
-  const maxElise = 2;
+  const maxElise = 3;
   const eliseIndex = random(maxElise);
   return `./assets/elise/elise${eliseIndex}.jpg`;
 }
